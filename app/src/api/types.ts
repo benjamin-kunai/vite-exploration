@@ -1,4 +1,5 @@
 export type Person = {
+  type: 'person';
   name: string;
   birth_year: string;
   eye_color: string;
@@ -12,6 +13,7 @@ export type Person = {
 };
 
 export type Planet = {
+  type: 'planet';
   name: string;
   rotation_period: string;
   orbital_period: string;
@@ -22,6 +24,7 @@ export type Planet = {
 };
 
 export type Starship = {
+  type: 'starship';
   name: string;
   model: string;
   manufacturer: string;
@@ -32,6 +35,7 @@ export type Starship = {
 };
 
 export type Vehicle = {
+  type: 'vehicle';
   name: string;
   model: string;
   manufacturer: string;
@@ -42,6 +46,7 @@ export type Vehicle = {
 };
 
 export type Film = {
+  type: 'film';
   title: string;
   episode_id: number;
   opening_crawl: string;
@@ -51,6 +56,7 @@ export type Film = {
 };
 
 export type Species = {
+  type: 'species';
   name: string;
   classification: string;
   designation: string;

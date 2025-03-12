@@ -1,5 +1,6 @@
 import "./style.css";
 import { ApiClient } from "./api/client";
+import { appendResults } from "./api/utils";
 
 const apiClient = new ApiClient();
 
@@ -11,13 +12,13 @@ const attachEventListeners = () => {
     const formData = new FormData(form);
     const searchTerm = formData.get('search') as string;
     const searchType = formData.get('group1') as string;
-
+    let results: Record<string, any>[] = [];
     switch (searchType) {
       case 'people':
-        await apiClient.searchPeople(searchTerm);
+         results = await apiClient.searchPeople(searchTerm);
         break;
       case 'planets':
-        await apiClient.searchPlanets(searchTerm);
+        results = await apiClient.searchPlanets(searchTerm);
         break;
       case 'vehicles':
         await apiClient.searchVehicles(searchTerm);
@@ -32,6 +33,7 @@ const attachEventListeners = () => {
         await apiClient.searchSpecies(searchTerm);
         break;
     }
+    appendResults(results);
   });
   };
 
@@ -58,8 +60,15 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
       <input  type="submit" value="Submit">
     </div>
     </form>
-    <p class="read-the-docs">
-    </p>
+    <h2>Results:</h2>
+    <table id="results">
+      <thead id="results-header">
+        <tr>
+        </tr>
+      </thead>
+      <tbody id="results-body">
+      </tbody>
+    </table>
   </div>
 `;
 
