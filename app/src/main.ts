@@ -1,5 +1,8 @@
 import './style.css'
-import { setUpListeners } from './api';
+import { ApiClient } from './api/client';
+
+const apiClient = new ApiClient();
+
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -12,4 +15,4 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </p>
   </div>
 `
-setUpListeners();
+apiClient.attachEventListeners();

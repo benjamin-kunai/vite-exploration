@@ -59,3 +59,15 @@ export type Species = {
   homeworld: string;
   language: string;
 };
+
+
+export type EntityType = {
+    'people': Person,
+    'planets': Planet,
+    'starships': Starship,
+    'vehicles': Vehicle,
+    'films': Film,
+    'species': Species
+}
+
+export type Endpoint = keyof EntityType;
