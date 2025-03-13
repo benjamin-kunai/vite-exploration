@@ -1,7 +1,7 @@
 import "./style.css";
 import { ApiClient } from "./api/client";
-import { appendResults } from "./api/utils";
-
+import { updateUI } from "./api/utils";
+import { Endpoint } from "./api/types";
 const apiClient = new ApiClient();
 
 const attachEventListeners = () => {
@@ -12,35 +12,23 @@ const attachEventListeners = () => {
     const formData = new FormData(form);
     const searchTerm = formData.get('search') as string;
     const searchType = formData.get('group1') as string;
-    let results: Record<string, any>[] = [];
-    switch (searchType) {
-      case 'people':
-         results = await apiClient.searchPeople(searchTerm);
-        break;
-      case 'planets':
-        results = await apiClient.searchPlanets(searchTerm);
-        break;
-      case 'vehicles':
-        await apiClient.searchVehicles(searchTerm);
-        break;
-      case 'starships':
-        await apiClient.searchStarships(searchTerm);
-        break;
-      case 'films':
-        await apiClient.searchFilms(searchTerm);
-        break;
-      case 'species':
-        await apiClient.searchSpecies(searchTerm);
-        break;
+    if(searchTerm || searchType) {
+    let results: Record<string, any>[] = await apiClient.search(searchType as Endpoint, searchTerm);
+    if (results.length > 0) {
+      updateUI(results);
+    } else {
+      alert('No results found');
     }
-    appendResults(results);
+  }
   });
   };
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <h1>Vite/TypeScript App</h1>
-    <form id="form">
+    <form id="form" class="container card">
+     <h2 class="header">Filter By</h2>
+    <div class="radio-container">
     <fieldset id="group1">
           <input id="people" type="radio" value="people" name="group1" >
           <label for="people">People</label>
@@ -55,20 +43,13 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
           <input id="species" type="radio" value="species" name="group1">
           <label for="species">Species</label>
     </fieldset>
+    </div>
+    <div class="input-container">
       <input name="search" id="search" type="text"/>
-    <div class="card" >
-      <input  type="submit" value="Submit">
+       <input  type="submit" value="Submit">
     </div>
     </form>
-    <h2>Results:</h2>
-    <table id="results">
-      <thead id="results-header">
-        <tr>
-        </tr>
-      </thead>
-      <tbody id="results-body">
-      </tbody>
-    </table>
+    <div id="results"></div>
   </div>
 `;
 
